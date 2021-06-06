@@ -1,0 +1,138 @@
+<head>
+    <meta charset="UTF-8" />
+    <title>Säästätkö aikaa vai rahaa?</title>
+    <meta name="description" content="Bensalaskuri kesälomaa varten" />
+    <meta name="author" content="Tony Ross Wainio" />
+    <link rel="stylesheet" href="rahavaiaika.css" />
+    <body>
+        <div id="sisalto">
+            <div class="leveeOtsikko"><h1 class="otsikko">Säästätkö bensaa vai aikaa?</h1></div>
+            <div class="leveeTekstiBlokki">
+                <ul>
+                    <li>1. Syötä matkasi pituus</li>
+                    <li>2. Anna kaksi keskinopeusarviota</li>
+                    <li>3. Lukitse vastauksesi</li>
+                    <li>4. Klikkaamalla autoa saat vertailun tulokset</li>
+                    <li>5. Mieti onko matkan keston lyheneminen lisäkustannuksen ja stressin arvoinen</li>
+                </ul>
+            </div>
+            <div class="kahden-kolumni" id="matka-ja-nopeus">
+                <div class="vasen-2-kolumni">
+                <form>
+                    <label for="matka">Matkan pituus:</label>
+                    <input type="number" id="matka" name="matka"><br>
+                    <label for="nopeusHidas">Rauhallinen nopeutesi:</label>
+                    <input type="number" id="nopeus1" name="nopeus1"><br>
+                    <label for="nopeusNopea">Kaahaileva nopeutesi:</label>
+                    <input type="number" id="nopeus2" name="nopeus2"><br>
+                </form>
+                <button id="lukitsevastaus" onclick=lukitse()>Lukitse vastaus</button>
+                </div>
+                <div class="oikea-2-kolumni">
+                    <h3 class="valintasi" id="pituus">Matkasi pituus</h3><h3 class="valintasi">&nbsp;km</h3><br>
+                    <h3 class="valintasi" id="vauhti1">Hidas matkanopeutesi</h3><h3 class="valintasi">&nbsp;km/h</h3><br>
+                    <h3 class="valintasi" id="vauhti2">Kaahaileva matkanopeutesi</h3><h3 class="valintasi">&nbsp;km/h</h3>
+                </div>
+            </div>
+            <div class="hajurako"></div>
+            <div class="kahden-kolumni" id="autot">
+                <div class="vasen-2-kolumni">
+                    <p id="matala" class="auto" onclick=laskeMatala()>Kätevä kauppakassi</p>
+                    <p id="keski" class="auto" onclick=laskeKeski()>Perheellisen farmari</p>
+                    <p id="korkea" class="auto" onclick=laskeKorkea()>Neliveto katumaasturi</p>
+                </div>
+                <div class="oikea-2-kolumni">
+                    <div class="auto-tulos">
+                        <p class="tulos-otsikot">Kesto rauhallisesti:</p><p id="auto-tulos-aika1"></p>
+                        <p class="tulos-otsikot">Kulutus rauhallisesti:</p><p id="auto-tulos-kulutus1"></p>
+                        <p class="tulos-otsikot">Kokonaiskulutus:</p><p id="auto-tulos-kokonaiskulutus1"></p>
+                    </div>
+                </div>
+                <div class="oikea-2-kolumni">
+                    <div class="auto-tulos">
+                        <p class="tulos-otsikot">Kesto kaahaten:</p><p id="auto-tulos-aika2"></p><p id="erotus-aika"></p>
+                        <p class="tulos-otsikot">Kulutus kaahaten:</p> <p id="auto-tulos-kulutus2"></p><p id="erotus-kulutus"></p>
+                        <p class="tulos-otsikot">Kokonaiskulutus:</p><p id="auto-tulos-kokonaiskulutus2"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function lukitse(){
+                var val1 = document.getElementById("matka").value;
+                var val2 = document.getElementById("nopeus1").value;
+                var val3 = document.getElementById("nopeus2").value;
+                document.getElementById("pituus").innerHTML = val1;
+                document.getElementById("vauhti1").innerHTML = val2;
+                document.getElementById("vauhti2").innerHTML = val3;
+            }
+        </script>
+        <script>
+            function laskeMatala(){
+                const m = document.getElementById("pituus").innerHTML = Number(document.getElementById("pituus").innerHTML);
+                const v1 = document.getElementById("vauhti1").innerHTML = Number(document.getElementById("vauhti1").innerHTML);
+                const v2 = document.getElementById("vauhti2").innerHTML = Number(document.getElementById("vauhti2").innerHTML);
+                const ker = 1.009;
+                const kp = 3;
+                const kkps = ((kp * 1.009) - kp);
+                const k1 = (kkps * v1 + kp);
+                const k2 = (kkps * v2 + kp);
+                const kok1 = ((k1 * m) / 100);
+                const kok2 = ((k2 * m) / 100);
+                const a1h = ((m / v1) * 60);
+                const a2h = ((m / v2) * 60);
+                document.getElementById("auto-tulos-aika1").innerHTML = Math.floor(a1h / 60) + " h &nbsp" + Math.round(a1h % 60) + " min";
+                document.getElementById("auto-tulos-aika2").innerHTML = Math.floor(a2h / 60) + " h &nbsp" + Math.round(a2h % 60) + " min"; 
+                document.getElementById("auto-tulos-kulutus1").innerHTML = k1.toFixed(2) + "&nbsp" + "litraa / 100km";
+                document.getElementById("auto-tulos-kokonaiskulutus1").innerHTML = kok1.toFixed(2) + "&nbsp" + "litraa";
+                document.getElementById("auto-tulos-kulutus2").innerHTML = k2.toFixed(2) + "&nbsp" + "litraa / 100km";
+                document.getElementById("auto-tulos-kokonaiskulutus2").innerHTML = kok2.toFixed(2) + "&nbsp" + "litraa";
+            }
+        </script>
+        <script>
+            function laskeKeski(){
+                const m = document.getElementById("pituus").innerHTML = Number(document.getElementById("pituus").innerHTML);
+                const v1 = document.getElementById("vauhti1").innerHTML = Number(document.getElementById("vauhti1").innerHTML);
+                const v2 = document.getElementById("vauhti2").innerHTML = Number(document.getElementById("vauhti2").innerHTML);
+                const ker = 1.009;
+                const kp = 3.5;
+                const kkps = ((kp * 1.009) - kp);
+                const k1 = (kkps * v1 + kp);
+                const k2 = (kkps * v2 + kp);
+                const kok1 = ((k1 * m) / 100);
+                const kok2 = ((k2 * m) / 100);
+                const a1h = ((m / v1) * 60);
+                const a2h = ((m / v2) * 60);
+                document.getElementById("auto-tulos-aika1").innerHTML = Math.floor(a1h / 60) + " h &nbsp" + Math.round(a1h % 60) + " min";
+                document.getElementById("auto-tulos-aika2").innerHTML = Math.floor(a2h / 60) + " h &nbsp" + Math.round(a2h % 60) + " min";
+                document.getElementById("auto-tulos-kulutus1").innerHTML = k1.toFixed(2) + "&nbsp" + "litraa / 100km";
+                document.getElementById("auto-tulos-kokonaiskulutus1").innerHTML = kok1.toFixed(2) + "&nbsp" + "litraa";
+                document.getElementById("auto-tulos-kulutus2").innerHTML = k2.toFixed(2) + "&nbsp" + "litraa / 100km";
+                document.getElementById("auto-tulos-kokonaiskulutus2").innerHTML = kok2.toFixed(2) + "&nbsp" + "litraa";
+            }
+        </script>
+        <script>
+            function laskeKorkea(){
+                const m = document.getElementById("pituus").innerHTML = Number(document.getElementById("pituus").innerHTML);
+                const v1 = document.getElementById("vauhti1").innerHTML = Number(document.getElementById("vauhti1").innerHTML);
+                const v2 = document.getElementById("vauhti2").innerHTML = Number(document.getElementById("vauhti2").innerHTML);
+                const ker = 1.009;
+                const kp = 4;
+                const kkps = ((kp * 1.009) - kp);
+                const k1 = (kkps * v1 + kp);
+                const k2 = (kkps * v2 + kp);
+                const kok1 = ((k1 * m) / 100);
+                const kok2 = ((k2 * m) / 100);
+                const a1h = ((m / v1) * 60);
+                const a2h = ((m / v2) * 60);
+                document.getElementById("auto-tulos-aika1").innerHTML = Math.floor(a1h / 60) + " h &nbsp" + Math.round(a1h % 60) + " min";
+                document.getElementById("auto-tulos-aika2").innerHTML = Math.floor(a2h / 60) + " h &nbsp" + Math.round(a2h % 60) + " min";
+                document.getElementById("auto-tulos-kulutus1").innerHTML = k1.toFixed(2) + "&nbsp" + "litraa / 100km";
+                document.getElementById("auto-tulos-kokonaiskulutus1").innerHTML = kok1.toFixed(2) + "&nbsp" + "litraa";
+                document.getElementById("auto-tulos-kulutus2").innerHTML = k2.toFixed(2) + "&nbsp" + "litraa / 100km";
+                document.getElementById("auto-tulos-kokonaiskulutus2").innerHTML = kok2.toFixed(2) + "&nbsp" + "litraa";
+            }
+        </script>
+
+    </body>
+</head>
